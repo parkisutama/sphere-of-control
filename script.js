@@ -12,23 +12,23 @@ var myChart = new Chart(ctx, {
         datasets: [
             {
                 label: 'Circle of Concern',
-                data: [0],
-                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Control
-                borderWidth: 1,
+                data: [2],
+                backgroundColor: 'rgba(173, 238, 227, 0.2)', // Control
+                borderWidth: 0,
                 cutout: '0%'
             },
             {
                 label: 'Circle of Influence',
-                data: [0],
-                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Influence
-                borderWidth: 1,
+                data: [4],
+                backgroundColor: 'rgba(173, 238, 227, 0.2)', // Influence
+                borderWidth: 0,
                 cutout: '0%'
             },
             {
                 label: 'Circle of Control',
-                data: [0],
-                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Concern
-                borderWidth: 1,
+                data: [6],
+                backgroundColor: 'rgba(173, 238, 227, 0.2)', // Concern
+                borderWidth: 0,
                 cutout: '0%'
             }
         ]
@@ -102,11 +102,11 @@ function updateChart() {
 
     // Update chart data
     myChart.data.datasets[0].data = [concernCount];
-    myChart.data.datasets[0].backgroundColor = `rgba(0, 0, 255, ${getTransparency(concernPercentage / 100)})`;
+    myChart.data.datasets[0].backgroundColor = `rgba(173, 238, 227, ${getTransparency(concernPercentage / 100)})`;
     myChart.data.datasets[1].data = [influenceCount];
-    myChart.data.datasets[1].backgroundColor = `rgba(0, 0, 255, ${getTransparency(influencePercentage / 100)})`;
+    myChart.data.datasets[1].backgroundColor = `rgba(134, 222, 183, ${getTransparency(influencePercentage / 100)})`;
     myChart.data.datasets[2].data = [controlCount];
-    myChart.data.datasets[2].backgroundColor = `rgba(0, 0, 255, ${getTransparency(controlPercentage / 100)})`;
+    myChart.data.datasets[2].backgroundColor = `rgba(99, 185, 149, ${getTransparency(controlPercentage / 100)})`;
     
     myChart.update();
 

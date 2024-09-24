@@ -1,54 +1,112 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Circle of Control Visualization</title>
+
+    <title>Sphere of Control</title>
+
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="favicon.png">
 </head>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <body>
 
+    <!-- Header Section -->
+    <header>
+        <h1>Sphere of Control</h1>
+        <nav>
+            <ul>
+                <li><a href="#myChart">Chart</a></li>
+                <li><a href="#advice">Advice</a></li>
+                <li><a href="#concernInput">Add Concern</a></li>
+                <li><a href="#concernsTable">Concerns Table</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Content -->
+
     <div class="container">
-        <!-- Form Section -->
-        <div class="form-container">
-            <h2>Input Concerns</h2>
-            <input type="text" id="concernInput" placeholder="Enter your concern" required>
-            <button onclick="addConcern()">Add Concern</button>
+        <!-- Left Column: Visualization and Advice -->
+
+        <div class="left-column">
+
+            <!-- Chart Visualization Section -->
+
+            <div class="chart-container">
+
+                <canvas id="myChart"></canvas>
+
+            </div>
+            
+            <!-- Advice Section -->
+
+            <div class="advice-container">
+                
+                <b><p id="advice"></p></b>
+                <p id="controlPercent"></p>
+                <p id="influencePercent"></p>
+                <p id="concernPercent"></p>
+            
+            </div>
+        
         </div>
 
-        <!-- Concerns Table Section -->
-        <div class="table-container">
-            <h2>Concerns</h2>
-            <table id="concernsTable">
-                <thead>
-                    <tr>
-                        <th>Concern</th>
-                        <th>Category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Concerns will be dynamically added here -->
-                </tbody>
-            </table>
-        </div>
 
-        <!-- Chart Visualization Section -->
-        <div class="chart-container">
-            <h2>Visualization</h2>
-            <canvas id="myChart" width="400" height="400"></canvas>
-        </div>
+        <!-- Right Column: Form and Table -->
+        <div class="right-column">
 
-        <!-- Advice Section -->
-        <div class="advice-container">
-            <h2>Results and Advice</h2>
-            <p id="controlPercent"></p>
-            <p id="influencePercent"></p>
-            <p id="concernPercent"></p>
-            <h3>Actionable Advice</h3>
-            <p id="advice"></p>
+            <!--Quote-->
+            <div>
+                <p>We suffer more in our imagination than in reality.</p>
+                <p>~Seneca</p>
+            </div>
+
+            
+
+            <!-- Form Section -->
+
+            <div class="form-container">
+                <b><p>List of Concerns</p></b>
+
+                <input type="text" id="concernInput" placeholder="Enter your concern" required>
+
+                <button onclick="addConcern()">Add Concern</button>
+
+            </div>
+
+
+            <!-- Concerns Table Section -->
+
+            <div class="table-container">
+
+                <table id="concernsTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>Concern</th>
+
+                            <th>Category</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <!-- Concerns will be dynamically added here -->
+
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
+
 
     <script src="script.js"></script>
 </body>

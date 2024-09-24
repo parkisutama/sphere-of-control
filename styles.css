@@ -2,7 +2,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 15px;
     box-sizing: border-box;
 }
 
@@ -18,9 +18,39 @@ h2 {
 }
 
 /* Form Container */
-.form-container, .table-container, .chart-container, .advice-container {
+.form-container, .table-container {
     flex-basis: 100%;
-    padding: 15px;
+    padding: 5px;
+}
+
+/* Advice Container */
+
+advice-container {
+    font-size: 0.5em; /* Mengatur ukuran font lebih kecil */
+    line-height: 0; /* Mengatur tinggi baris untuk mengurangi spasi antar baris */
+    padding: 5px; /* Mengurangi padding */
+}
+
+
+/* Chart Container */
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+.chart-container {
+    flex-basis: 50%;
+    display: flex;
+    justify-content: center; /* Menambahkan ini untuk memusatkan konten */
+    align-items: center;
+
+}
+
+.advice-container, .chart-container {
+    flex-basis: 50%;
+    padding: 5px;
+    max-height: 50vh;
+    overflow-y: auto;
 }
 
 input {
@@ -49,6 +79,8 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    padding: 5px;
+    
 }
 
 th, td {
@@ -61,25 +93,27 @@ th {
     background-color: #f2f2f2;
 }
 
-/* Chart Container */
-canvas {
-    max-width: 100%;
-    height: auto;
-}
 
-/* Three-column layout for larger screens */
+
+/* Two-column layout for larger screens */
 @media (min-width: 480px) {
     .container {
         flex-direction: row;
         justify-content: space-between;
     }
 
-    .form-container, .table-container, .chart-container, .advice-container {
-        flex-basis: 30%;
+    .form-container, .table-container {
+        flex-basis: 100%;
+        max-height: 50vh;
+        overflow-y: auto;
     }
 
-    .chart-container {
-        flex-basis: 30%;
+    .right-column {
+        flex-basis: 50%;
+    }
+
+    .left-column {
+        flex-basis: 50%;
     }
 }
 
@@ -91,5 +125,55 @@ canvas {
 
     .form-container, .table-container, .chart-container, .advice-container {
         flex-basis: 100%;
+        max-height: 300px;
+        overflow-y: auto;   
+    }
+}
+
+header {
+    
+    color: rgb(62, 54, 54);
+    padding: 15px 0;
+    text-align: left;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+    justify-content: right;
+    margin: 5px 0 0 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: rgb(35, 25, 25);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
     }
 }
