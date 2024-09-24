@@ -61,6 +61,8 @@ function addConcern() {
     updateTable();
 }
 
+// ... existing code ...
+
 function updateTable() {
     var tableBody = document.getElementById('concernsTable').getElementsByTagName('tbody')[0];
     tableBody.innerHTML = "";
@@ -69,6 +71,7 @@ function updateTable() {
         var row = tableBody.insertRow();
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2); // New cell for edit, delete, and move buttons
 
         cell1.textContent = concern.text;
 
@@ -83,12 +86,52 @@ function updateTable() {
         select.onchange = function () {
             concerns[index].category = this.value;
             updateChart();
+            saveConcerns();
         };
         cell2.appendChild(select);
+
+        var actionButtons = document.createElement('div');
+        actionButtons.className = 'action-buttons';
+
+        var editButton = document.createElement('button');
+        editButton.className = 'action-button';
+        editButton.innerHTML = '<i class="fas fa-edit"></i>';
+        editButton.onclick = function () {
+            editConcern(index);
+        };
+        actionButtons.appendChild(editButton);
+
+        var deleteButton = document.createElement('button');
+        deleteButton.className = 'action-button';
+        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        deleteButton.onclick = function () {
+            deleteConcern(index);
+        };
+        actionButtons.appendChild(deleteButton);
+
+        var upButton = document.createElement('button');
+        upButton.className = 'action-button';
+        upButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        upButton.onclick = function () {
+            moveConcernUp(index);
+        };
+        actionButtons.appendChild(upButton);
+
+        var downButton = document.createElement('button');
+        downButton.className = 'action-button';
+        downButton.innerHTML = '<i class="fas fa-arrow-down"></i>';
+        downButton.onclick = function () {
+            moveConcernDown(index);
+        };
+        actionButtons.appendChild(downButton);
+
+        cell3.appendChild(actionButtons);
     });
 
     updateChart();
 }
+
+// ... existing code ...
 
 function updateChart() {
     var controlCount = concerns.filter(c => c.category === 'Control').length;
@@ -111,9 +154,12 @@ function updateChart() {
     myChart.update();
 
     // Update percentage text
-    document.getElementById('controlPercent').textContent = `Circle of Control: ${controlPercentage.toFixed(2)}%`;
-    document.getElementById('influencePercent').textContent = `Circle of Influence: ${influencePercentage.toFixed(2)}%`;
-    document.getElementById('concernPercent').textContent = `Circle of Concern: ${concernPercentage.toFixed(2)}%`;
+    document.getElementById('controlPercent').textContent = `Things you can control : ${controlCount} (${controlPercentage.toFixed(2)}%)`;
+    document.getElementById('influencePercent').textContent = `Things you Influence : ${influenceCount} (${influencePercentage.toFixed(2)}%)`;
+    document.getElementById('concernPercent').textContent = `Things outside your control and influence : ${concernCount} (${concernPercentage.toFixed(2)}%)`;
+
+    // Update total concerns text
+    document.getElementById('totalConcerns').textContent = `Total Concerns: ${totalCount}`;
 
     // Provide actionable advice based on percentages
     var advice = "";
@@ -129,3 +175,78 @@ function updateChart() {
 
     document.getElementById('advice').textContent = advice;
 }
+
+//local data
+// Load concerns from local storage
+function loadConcerns() {
+    if (!storedConcerns) {
+        // Initial data for concerns
+        var initialConcerns = [
+            { id: 1, text: "Initial concern 1" },
+            { id: 2, text: "Initial concern 2" }
+        ];
+        localStorage.setItem('concerns', JSON.stringify(initialConcerns));
+        storedConcerns = JSON.stringify(initialConcerns);
+    }
+    concerns = JSON.parse(storedConcerns);
+    updateTable();
+}
+
+// Save concerns to local storage
+function saveConcerns() {
+    localStorage.setItem('concerns', JSON.stringify(concerns));
+}
+
+// Tambahkan event listener untuk mendeteksi tombol "Enter"
+document.getElementById('concernInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        addConcern();
+    }
+});
+
+function addConcern() {
+    var concernInput = document.getElementById('concernInput').value;
+    if (concernInput.trim() === "") {
+        alert("Please enter a valid concern.");
+        return;
+    }
+
+    concerns.push({ text: concernInput, category: 'Uncategorized' });
+    document.getElementById('concernInput').value = "";
+    updateTable();
+    saveConcerns();
+}
+
+function editConcern(index) {
+    var newText = prompt("Edit your concern:", concerns[index].text);
+    if (newText !== null && newText.trim() !== "") {
+        concerns[index].text = newText;
+        updateTable();
+        saveConcerns();
+    }
+}
+
+function deleteConcern(index) {
+    concerns.splice(index, 1);
+    updateTable();
+    saveConcerns();
+}
+
+function moveConcernUp(index) {
+    if (index > 0) {
+        [concerns[index], concerns[index - 1]] = [concerns[index - 1], concerns[index]];
+        updateTable();
+        saveConcerns();
+    }
+}
+
+function moveConcernDown(index) {
+    if (index < concerns.length - 1) {
+        [concerns[index], concerns[index + 1]] = [concerns[index + 1], concerns[index]];
+        updateTable();
+        saveConcerns();
+    }
+}
+
+// Load concerns when the page loads
+window.onload = loadConcerns;

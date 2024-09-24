@@ -177,3 +177,22 @@ nav ul li a:hover {
         align-items: center;
     }
 }
+
+.action-button {
+    padding: 5px;
+    font-size: 1em;
+    margin: 2px;
+    border: none;
+    background-color: transparent;
+    color: #007BFF;
+    cursor: pointer;
+}
+
+.action-button:hover {
+    color: #0056b3;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
