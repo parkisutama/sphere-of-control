@@ -179,17 +179,11 @@ function updateChart() {
 //local data
 // Load concerns from local storage
 function loadConcerns() {
-    if (!storedConcerns) {
-        // Initial data for concerns
-        var initialConcerns = [
-            { id: 1, text: "Initial concern 1" },
-            { id: 2, text: "Initial concern 2" }
-        ];
-        localStorage.setItem('concerns', JSON.stringify(initialConcerns));
-        storedConcerns = JSON.stringify(initialConcerns);
+    var storedConcerns = localStorage.getItem('concerns');
+    if (storedConcerns) {
+        concerns = JSON.parse(storedConcerns);
+        updateTable();
     }
-    concerns = JSON.parse(storedConcerns);
-    updateTable();
 }
 
 // Save concerns to local storage
