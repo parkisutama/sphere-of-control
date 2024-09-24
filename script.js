@@ -197,6 +197,13 @@ function saveConcerns() {
     localStorage.setItem('concerns', JSON.stringify(concerns));
 }
 
+// Tambahkan event listener untuk mendeteksi tombol "Enter"
+document.getElementById('concernInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        addConcern();
+    }
+});
+
 function addConcern() {
     var concernInput = document.getElementById('concernInput').value;
     if (concernInput.trim() === "") {
