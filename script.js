@@ -8,66 +8,106 @@ var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        //labels: ['Circle of Concern', 'Circle of Influence', 'Circle of Control'], // Add labels for each category
-        datasets: [{
-            label: 'Circle of Concern',
-            data: [5],
-            backgroundColor: 'rgba(0, 0, 255, 0.2)',
-            borderWidth: 0,
-            cutout: '0%'
-        }, {
-            label: 'Circle of Influence',
-            data: [5],
-            backgroundColor: 'rgba(0, 0, 255, 0.2)',
-            borderWidth: 0,
-            cutout: '0%'
-        }, {
-            label: 'Circle of Control',
-            data: [5],
-            backgroundColor: 'rgba(0, 0, 255, 0.2)',
-            borderWidth: 0,
-            cutout: '0%'
-        }]
+        labels: ['Circle of Concern', 'Circle of Influence', 'Circle of Control'],
+        datasets: [
+            {
+                label: 'Circle of Concern',
+                data: [0],
+                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Control
+                borderWidth: 1,
+                cutout: '0%'
+            },
+            {
+                label: 'Circle of Influence',
+                data: [0],
+                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Influence
+                borderWidth: 1,
+                cutout: '0%'
+            },
+            {
+                label: 'Circle of Control',
+                data: [0],
+                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Concern
+                borderWidth: 1,
+                cutout: '0%'
+            }
+        ]
     },
     options: {
-        responsive: 'true',
+        responsive: true,
         plugins: {
-            //legend: {
-                //position:'top',
-                //display: 'true',
-            //}
+            legend: {
+                position: 'top',
+                display: false,
+            }
         },
-        cutoutPercentage: 0,
         layout: {
             padding: 0
         }
     }
 });
 
-// Function to update the chart and provide actionable advice
-function updateChart() {
-    var control = parseFloat(document.getElementById('control').value);
-    var influence = parseFloat(document.getElementById('influence').value);
-    var concern = parseFloat(document.getElementById('concern').value);
+var concerns = [];
 
-    if (isNaN(control) || isNaN(influence) || isNaN(concern) || control <= 0 || influence <= 0 || concern <= 0) {
-        alert("Please enter valid numbers for all categories.");
+function addConcern() {
+    var concernInput = document.getElementById('concernInput').value;
+    if (concernInput.trim() === "") {
+        alert("Please enter a valid concern.");
         return;
     }
 
-    var totalData = control + influence + concern;
-    var controlPercentage = (control / totalData) * 100;
-    var influencePercentage = (influence / totalData) * 100;
-    var concernPercentage = (concern / totalData) * 100;
+    concerns.push({ text: concernInput, category: 'Uncategorized' });
+    document.getElementById('concernInput').value = "";
+    updateTable();
+}
+
+function updateTable() {
+    var tableBody = document.getElementById('concernsTable').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = "";
+
+    concerns.forEach((concern, index) => {
+        var row = tableBody.insertRow();
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+
+        cell1.textContent = concern.text;
+
+        var select = document.createElement('select');
+        select.innerHTML = `
+            <option value="Uncategorized">Uncategorized</option>
+            <option value="Control">Control</option>
+            <option value="Influence">Influence</option>
+            <option value="Concern">Concern</option>
+        `;
+        select.value = concern.category;
+        select.onchange = function () {
+            concerns[index].category = this.value;
+            updateChart();
+        };
+        cell2.appendChild(select);
+    });
+
+    updateChart();
+}
+
+function updateChart() {
+    var controlCount = concerns.filter(c => c.category === 'Control').length;
+    var influenceCount = concerns.filter(c => c.category === 'Influence').length;
+    var concernCount = concerns.filter(c => c.category === 'Concern').length;
+    var totalCount = concerns.length;
+
+    var controlPercentage = (controlCount / totalCount) * 100;
+    var influencePercentage = (influenceCount / totalCount) * 100;
+    var concernPercentage = (concernCount / totalCount) * 100;
 
     // Update chart data
-    myChart.data.datasets[0].data = [concern];
+    myChart.data.datasets[0].data = [concernCount];
     myChart.data.datasets[0].backgroundColor = `rgba(0, 0, 255, ${getTransparency(concernPercentage / 100)})`;
-    myChart.data.datasets[1].data = [influence];
+    myChart.data.datasets[1].data = [influenceCount];
     myChart.data.datasets[1].backgroundColor = `rgba(0, 0, 255, ${getTransparency(influencePercentage / 100)})`;
-    myChart.data.datasets[2].data = [control];
+    myChart.data.datasets[2].data = [controlCount];
     myChart.data.datasets[2].backgroundColor = `rgba(0, 0, 255, ${getTransparency(controlPercentage / 100)})`;
-
+    
     myChart.update();
 
     // Update percentage text

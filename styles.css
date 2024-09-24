@@ -18,7 +18,7 @@ h2 {
 }
 
 /* Form Container */
-.form-container, .chart-container, .advice-container {
+.form-container, .table-container, .chart-container, .advice-container {
     flex-basis: 100%;
     padding: 15px;
 }
@@ -44,6 +44,23 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* Table Container */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
 /* Chart Container */
 canvas {
     max-width: 100%;
@@ -57,7 +74,7 @@ canvas {
         justify-content: space-between;
     }
 
-    .form-container, .chart-container, .advice-container {
+    .form-container, .table-container, .chart-container, .advice-container {
         flex-basis: 30%;
     }
 
@@ -72,7 +89,7 @@ canvas {
         flex-direction: column;
     }
 
-    .form-container, .chart-container, .advice-container {
+    .form-container, .table-container, .chart-container, .advice-container {
         flex-basis: 100%;
     }
 }
